@@ -1,6 +1,7 @@
 import os
 import random
-
+import string
+import argparse
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,6 +18,10 @@ def random_hex():
         random.randint(0, 255),
         random.randint(0, 255),
     )
+
+def random_string(length):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
 
 def background():
     choice = random.randint(0, 1)
@@ -50,7 +55,7 @@ def eyes():
     choice = random.randint(0, 1)
     eyesColor = random_hex()
     eyesOptions = [
-        f'<circle cx="70" cy="70" r="25" fill="{eyesColor}"/>\n    <circle cx="130" cy="70" r="25" fill="{eyesColor}"/>',
+        f'<circle cx="70" cy="70" r="25" fill="white"/>\n    <circle cx="130" cy="70" r="25" fill="white"/>\n    <rect x="60" y="70" ry="10" rx="10" height="20" width="20" fill="{eyesColor}"/>\n    <rect x="120" y="70" ry="10" rx="10" height="20" width="20" fill="{eyesColor}"/>',
         f'<rect x="60" y="50" ry="10" rx="10" height="40" width="20" fill="{eyesColor}"/>\n    <rect x="120" y="50" ry="10" rx="10" height="40" width="20" fill="{eyesColor}"/>',
     ]
     print(choice)
@@ -87,20 +92,37 @@ def mouth():
         case 0:
             return mouthOptions[0]
 
-with open('teste.txt', 'w', opener=opener) as f:
+def create():
+    name = random_string(5)
+    print(name)
 
-    print('<svg width="200" height="200">', file=f)
-    print('    '+ background(), file=f)
-    print('    '+ head(), file=f)
-    print('    '+ eyes(), file=f)
-    print('    '+ accessory(), file=f)
-    print('    '+ mouth(), file=f)
-    print('</svg>', file=f)
+    with open(f'{name}.txt', 'w', opener=opener) as f:
+
+        print('<svg width="200" height="200">', file=f)
+        print('    '+ background(), file=f)
+        print('    '+ head(), file=f)
+        print('    '+ eyes(), file=f)
+        print('    '+ accessory(), file=f)
+        print('    '+ mouth(), file=f)
+        print('</svg>', file=f)
 
 
-if os.path.exists('avatar.svg'):
-    os.rename('teste.txt', f'avatar{random_hex()}.svg')
+    if os.path.exists('avatar.svg'):
+        os.rename(f'{name}.txt', f'avatar {name}.svg')
+    else:
+        os.rename(f'{name}.txt','avatar.svg')
+
+parser = argparse.ArgumentParser(prog='myprogram')
+parser.add_argument('-c', '--count', help='Number of avatars to create')  
+
+args = parser.parse_args()
+
+if args.count:
+    count = int(args.count)
+    
+    for i in range(count):
+        create()
 else:
-    os.rename('teste.txt','avatar.svg')
+    create()
 
 os.close(dir_fd)
