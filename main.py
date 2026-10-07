@@ -1,16 +1,13 @@
 import os
 import random
 import string
-import argparse
 from dotenv import load_dotenv
 
 load_dotenv()
-WorkingDirectory = os.getenv("WorkingDirectory")
+WorkingDirectory =os.getenv("WorkingDirectory")
 
 dir_fd = os.open(WorkingDirectory, os.O_RDONLY)
 
-def opener(path, flags):
-    return os.open(path, flags, dir_fd=dir_fd)
 
 def random_hex():
     return '#{:02x}{:02x}{:02x}'.format(
@@ -94,6 +91,9 @@ def mouth():
 def create(count=1, bg=False):
     amount = count
 
+    def opener(path, flags):
+        return os.open(path, flags, dir_fd=dir_fd)
+
     for i in range(amount):
         name = random_string(5)
         print(name)
@@ -117,12 +117,5 @@ def create(count=1, bg=False):
             os.rename(f'{name}.txt', f'avatar {name}.svg')
         else:
             os.rename(f'{name}.txt','avatar.svg')
-
-parser = argparse.ArgumentParser(prog='myprogram')
-parser.add_argument('-c', '--count', help='Number of avatars to create')  
-parser.add_argument('-b', '--background', action='store_true', help='Background')  
-args = parser.parse_args()
-
-create(int(args.count) if args.count else 1, args.background if args.background else False)
-
-os.close(dir_fd)
+    
+    os.close(dir_fd)

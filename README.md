@@ -6,16 +6,25 @@
 
 ## Usage
 
-```
-python3 main.py (args)
+```　py
+import MicroAvatar
+
+MicroAvatar.create()
 ```
 
 ## Options
 
-| Option | or | Description |
-|--------|----|-------------|
-| -c     | --count | Specifies the amount of avatars |
-| -b     | --background | Adds background |
+| Option | Input    | Default | Description |
+|--------|----------|---------|-------------|
+| count  | ``Int``  | 1       | Specifies the amount of avatars |
+| bg     | ``Bool`` | False   | Adds background |
+
+## Example
+``` py
+import MicroAvatar
+
+MicroAvatar.create(5, True) # Outputs 5 avatars with background
+```
 
 ## Roadmap
 
