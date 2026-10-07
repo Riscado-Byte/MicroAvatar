@@ -4,15 +4,21 @@
 
 ![demo](/Assets/icon)
 
-# Usage
+## Usage
 
 ```
-python3 main.py
+python3 main.py (args)
 ```
 
-# Options
+## Options
 
-| Option | Description |
-|--------|-------------|
-| -c     | Specifies the amount of avatars |
+| Option | or | Description |
+|--------|----|-------------|
+| -c     | --count | Specifies the amount of avatars |
+| -b     | --background | Adds background |
 
+## Roadmap
+
+- [x] Add a way to add the background
+- [ ] Add a way to config the file path
+- [ ] Add an option to raster the svgs
