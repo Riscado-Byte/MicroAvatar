@@ -2,6 +2,7 @@ import os
 import random
 import string
 import pathlib
+import cairosvg
 
 def random_hex():
     return '#{:02x}{:02x}{:02x}'.format(
@@ -82,7 +83,7 @@ def mouth():
     print(choice)
     return '    ' + mouthOptions[choice]
 
-def create(count=1, bg=False, path=pathlib.Path().resolve()):
+def create(count=1, bg=False, path=pathlib.Path().resolve(), raster=False):
     workingDirectory = path
     print(workingDirectory)
 
@@ -111,9 +112,16 @@ def create(count=1, bg=False, path=pathlib.Path().resolve()):
             print(mouth(), file=f)
             print('</svg>', file=f)
 
-        if os.path.exists('avatar.svg'):
+        if os.path.exists(f'{path}/avatar.svg'):
             os.rename(f'{path}/{name}.txt', f'{path}/avatar {name}.svg')
         else:
             os.rename(f'{path}/{name}.txt', f'{path}/avatar.svg')
+    
+        if raster:
+            if os.path.exists(f'{path}/avatar.svg'):
+                cairosvg.svg2png(url=f'{path}/avatar.svg', write_to=f'{path}/avatar.png')
+        
+            if os.path.exists(f'{path}/avatar {name}.svg'):
+                cairosvg.svg2png(url=f'{path}/avatar {name}.svg', write_to=f'{path}/avatar {name}.png')
     
     os.close(dir_fd)
