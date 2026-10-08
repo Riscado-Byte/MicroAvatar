@@ -1,13 +1,7 @@
 import os
 import random
 import string
-from dotenv import load_dotenv
-
-load_dotenv()
-WorkingDirectory =os.getenv("WorkingDirectory")
-
-dir_fd = os.open(WorkingDirectory, os.O_RDONLY)
-
+import pathlib
 
 def random_hex():
     return '#{:02x}{:02x}{:02x}'.format(
@@ -88,7 +82,12 @@ def mouth():
     print(choice)
     return '    ' + mouthOptions[choice]
 
-def create(count=1, bg=False):
+def create(count=1, bg=False, path=pathlib.Path().resolve()):
+    workingDirectory = path
+    print(workingDirectory)
+
+    dir_fd = os.open(workingDirectory, os.O_RDONLY)
+
     amount = count
 
     def opener(path, flags):
@@ -98,7 +97,7 @@ def create(count=1, bg=False):
         name = random_string(5)
         print(name)
     
-        with open(f'{name}.txt', 'w', opener=opener) as f:
+        with open(f'{name}.txt', 'x', opener=opener) as f:
 
             print('<svg width="200" height="200">', file=f)
 
@@ -112,10 +111,9 @@ def create(count=1, bg=False):
             print(mouth(), file=f)
             print('</svg>', file=f)
 
-
         if os.path.exists('avatar.svg'):
-            os.rename(f'{name}.txt', f'avatar {name}.svg')
+            os.rename(f'{path}/{name}.txt', f'{path}/avatar {name}.svg')
         else:
-            os.rename(f'{name}.txt','avatar.svg')
+            os.rename(f'{path}/{name}.txt', f'{path}/avatar.svg')
     
     os.close(dir_fd)
